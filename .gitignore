@@ -1,0 +1,28 @@
+# Local runtime data stays out of permanent Git history.
+__pycache__/
+*.py[cod]
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+node_modules/
+.wrangler/
+.private/
+inbox/
+output/
+issues/
+assets/
+data/
+# Actual configuration and local operating instructions.
+config/*
+!config/sources.json
+!config/*.example.json
+AUTOMATION.md
+FEISHU-CLOSED-LOOP.md
+REVIEW-*.md
+LOCAL-NOTES.md
+# Retired cloud sender prototype; production delivery is local.
+cloudflare/

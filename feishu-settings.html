@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>飞书推送 · 本地设置</title>
+<style>
+:root{color-scheme:light;--ink:#24333b;--muted:#687780;--line:#dfe5e8;--paper:#fff;--bg:#f4f6f8;--accent:#226d66}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}main{max-width:620px;margin:60px auto;padding:0 24px 40px}.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--muted)}h1{font-size:30px;margin:10px 0 8px;letter-spacing:-.04em}p{margin:0 0 22px;color:var(--muted)}form{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:28px}label.field{display:block;font-weight:600;margin:22px 0 7px}label.field:first-child{margin-top:0}input[type=password],input[type=text]{width:100%;font:inherit;font-size:15px;padding:12px;border:1px solid #bfcbd0;border-radius:6px;background:white;color:var(--ink)}input:focus-visible,button:focus-visible{outline:3px solid #8ab9b1;outline-offset:3px}.hint{display:block;font-size:13px;line-height:1.65;color:var(--muted);margin:7px 0 0}.check{display:flex;align-items:flex-start;gap:9px;margin:24px 0 6px}.check input{margin:7px 0 0;accent-color:var(--accent)}button{background:var(--ink);color:white;border:0;border-radius:6px;font:inherit;font-weight:600;padding:12px 24px;margin-top:25px;cursor:pointer}button:disabled{opacity:.6;cursor:wait}#status{font-size:14px;color:var(--accent);border-left:3px solid var(--accent);padding:8px 12px;margin:20px 0}#feedback{margin:18px 0 0;font-size:14px}#feedback.error{color:#a63c34}.foot{margin-top:20px;font-size:13px}.signature{padding-top:5px}[hidden]{display:none!important}@media(max-width:600px){main{margin:30px auto;padding:0 18px 32px}form{padding:22px}h1{font-size:27px}}
+</style>
+<main><div class="eyebrow">每日 AI / 本地设置</div><h1>连接飞书群</h1><p>填入机器人的地址，给之后的日报推送做好准备。</p><div id="status" role="status">正在读取本地配置…</div>
+<form id="settings" autocomplete="off">
+<label class="field" for="webhook">机器人 webhook 地址</label><input id="webhook" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴完整的 https://open.feishu.cn/… 地址"><small class="hint" id="webhook-hint">保存在这台电脑上，保存后不回显。</small>
+<label class="check"><input id="signature" type="checkbox"><span>机器人已启用「签名校验」</span></label>
+<div id="secret-section" class="signature" hidden><label class="field" for="secret">签名密钥</label><input id="secret" type="password" autocomplete="off" placeholder="从飞书机器人的安全设置中复制"><small class="hint" id="secret-hint">与 webhook 一起保存在本地。</small></div>
+<label class="field" for="keyword">自定义关键词（选填）</label><input id="keyword" type="text" maxlength="100" placeholder="例如：AI 日报"><small class="hint">如果飞书中开启了关键词校验，填写其中一个允许的关键词；未开启可留空。</small>
+<label class="check"><input id="ip" type="checkbox"><span>机器人已启用「IP 白名单」</span></label><small class="hint">勾选只记录这项设置。之后发送时，电脑当前的公网出口 IP 仍需在飞书白名单里。</small>
+<button id="save" type="submit" disabled>保存到本机</button><p id="feedback" role="status" aria-live="polite"></p>
+</form><p class="foot">此页面只在你的电脑上打开。保存不会发送测试消息，也不会开启定时推送。</p></main>
+<script nonce="__NONCE__">
+const $ = selector => document.querySelector(selector);
+let configured = false;
+let hasSecret = false;
+
+$('#signature').onchange = () => {
+  $('#secret-section').hidden = !$('#signature').checked;
+};
+$('#webhook').addEventListener('input', () => {
+  $('#secret-hint').textContent = configured && $('#webhook').value.trim()
+    ? '更换机器人地址时，请重新填写对应的签名密钥。'
+    : '与 webhook 一起保存在本地。';
+});
+
+async function refresh() {
+  const response = await fetch('/status', {cache: 'no-store'});
+  const config = await response.json();
+  if (!response.ok) throw Error(config.error || '无法读取本地配置');
+  configured = config.configured;
+  hasSecret = config.has_secret;
+  $('#status').textContent = configured
+    ? '已保存本地配置 · 此页不检查飞书收件结果'
+    : '尚未配置 · 填写后保存即可';
+  $('#webhook').required = !configured;
+  $('#webhook').placeholder = configured
+    ? '已保存；留空保留，填写则替换'
+    : '粘贴完整的 https://open.feishu.cn/… 地址';
+  $('#signature').checked = config.signature_enabled;
+  $('#secret-section').hidden = !config.signature_enabled;
+  $('#secret').placeholder = hasSecret
+    ? '同一机器人留空保留；更换机器人须重新填写'
+    : '从飞书机器人的安全设置中复制';
+  $('#keyword').value = config.keyword;
+  $('#ip').checked = config.ip_allowlist_enabled;
+  $('#save').disabled = false;
+}
+
+$('#settings').onsubmit = async event => {
+  event.preventDefault();
+  $('#feedback').className = '';
+  if ($('#signature').checked && !$('#secret').value.trim() && !hasSecret) {
+    $('#feedback').className = 'error';
+    $('#feedback').textContent = '请填写签名密钥。';
+    return;
+  }
+  $('#save').disabled = true;
+  try {
+    const response = await fetch('/save', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Setup-Token': '__NONCE__'},
+      body: JSON.stringify({
+        webhook: $('#webhook').value,
+        secret: $('#secret').value,
+        signature_enabled: $('#signature').checked,
+        keyword: $('#keyword').value,
+        ip_allowlist_enabled: $('#ip').checked
+      })
+    });
+    const result = await response.json();
+    if (!response.ok) throw Error(result.error || '保存失败，请刷新页面后重试。');
+    $('#webhook').value = '';
+    $('#secret').value = '';
+    await refresh();
+    $('#feedback').textContent = '已保存到本机。本次保存不会发送消息。';
+  } catch (error) {
+    $('#feedback').className = 'error';
+    $('#feedback').textContent = error.message;
+  } finally {
+    $('#save').disabled = false;
+  }
+};
+refresh().catch(error => { $('#status').textContent = error.message; });
+</script></html>

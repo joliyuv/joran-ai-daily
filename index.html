@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f6f7f9">
+<title>每日 AI · 今日动态</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23263743'/%3E%3Cpath d='M12 11h16v18H12zM16 16h8M16 21h8' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css"><script src="common.js" defer></script><script src="app.js" defer></script>
+</head><body>
+<a class="skip" href="#news-feed">跳到新闻列表</a>
+<header class="masthead"><div class="masthead-inner"><a class="wordmark" href="./" aria-label="每日 AI 首页"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6c1 0 2 .5 2 1.5C12 5.5 13 5 14 5h6v14h-6c-1 0-2 .5-2 1.5C12 19.5 11 19 10 19H4zM12 6.5v14"/></svg>每日 AI</a><span class="masthead-caption">新闻、作品与正在发生的变化</span><div class="masthead-actions"><button class="quiet-button" id="history-open">历史新闻</button><button class="quiet-button" id="preferences"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>兴趣设置</button></div></div></header>
+<main class="page"><section class="edition" aria-label="本期信息"><div><p class="eyebrow" id="edition-date">每日更新</p><h1>今日 AI 动态</h1><p class="edition-intro">先看今日总结，再读你感兴趣的消息。</p></div><div class="edition-meta"><span class="preview-dot">每日更新</span><span id="edition-info">正在载入本期内容</span></div></section>
+<div class="edition-switch"><button class="quiet-button" id="previous-issue" hidden>← 上一期</button><button class="quiet-button" id="back-latest" hidden>回到最新一期</button><button class="quiet-button" id="next-issue" hidden>下一期 →</button></div>
+<section id="daily-summary" class="daily-summary" aria-label="AI 今日总结"></section>
+<div class="reading-layout"><aside class="directory" aria-label="栏目导航"><div class="directory-head"><h2>我的栏目</h2><span id="interest-count"></span></div><p id="preference-summary" class="preference-summary"></p><nav id="category-nav" aria-label="选择新闻栏目"></nav><div class="directory-note"><p>选好栏目，往下读。<br>感兴趣的消息可查看出处。</p></div></aside>
+<div class="feed-wrap"><div class="feed-toolbar"><span id="feed-title">全部订阅</span><span id="feed-count"></span></div><div id="news-feed" tabindex="-1"><p class="load-note">正在载入新闻…</p></div></div></div>
+<footer class="page-footer"><span>内容由 AI 整理，保留原文出处 · 每日更新</span><span>偏好保存在当前浏览器</span></footer></main>
+<dialog id="preference-dialog" aria-labelledby="dialog-title"><form id="preference-form"><div class="dialog-heading"><span class="eyebrow">你的每日阅读</span><button type="button" id="close-dialog" class="icon-button" aria-label="关闭兴趣设置">×</button></div><h2 id="dialog-title">选择你想读的栏目</h2><p class="dialog-intro">可以多选。以后从右上角调整，不需要注册。</p><div class="category-grid" id="category-options"></div><div class="selection-row"><button type="button" id="select-all">选择全部</button><span id="selection-count" aria-live="polite"></span></div><p id="form-error" class="error" role="alert" hidden>至少选择一个栏目，或选择全部。</p><div class="dialog-foot"><p>每期精选动态，保留来源与原文链接。</p><button class="primary-button" id="save-preferences" type="submit">开始阅读 <span aria-hidden="true">→</span></button></div></form></dialog>
+<dialog id="history-dialog" aria-labelledby="history-title"><div class="history-inner"><div class="dialog-heading"><span class="eyebrow">每日 AI · 阅读档案</span><button type="button" id="history-close" class="icon-button" aria-label="关闭历史新闻">×</button></div><h2 id="history-title">历史新闻</h2><p class="dialog-intro">挑一天，接着读。保留最近 30 天的日报。</p><div class="history-controls" aria-label="历史范围"><button data-days="7" aria-pressed="true">近 7 天</button><button data-days="30" aria-pressed="false">近 30 天</button><span id="history-count" role="status"></span></div><div id="history-list"><p class="load-note">正在载入历史…</p></div></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div><span class="corner-watermark" aria-label="JORAN">JORAN</span>
+</body></html>

@@ -1,0 +1,10 @@
+{
+  "obsidianDirectory": "../../Obsidian/AI 日报",
+  "automation": "PAUSED",
+  "deliveryRuntime": "local_app",
+  "automaticPublicationAuthorized": false,
+  "timezone": "Asia/Shanghai",
+  "prepareTime": "09:40",
+  "deliveryTime": "10:00",
+  "allowSameDayCatchUp": false
+}

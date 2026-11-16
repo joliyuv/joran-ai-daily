@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "daily-ai-2026-01-01",
+  "date": "2026-01-01",
+  "timezone": "Asia/Shanghai",
+  "status": "preview",
+  "overview": {
+    "paragraphs": [
+      "这是一份用于本地预览的模拟日报，不是真实新闻。",
+      "首页先展示总结，再按兴趣呈现图文；历史窗口按期阅读，支持近7天和30天。"
+    ],
+    "topics": []
+  },
+  "articles": [
+    {
+      "id": "sample-workflow",
+      "category": "use",
+      "title": "示例：把分散资料整理成一份清晰简报",
+      "author": "模拟发布方",
+      "publishedAt": "2026-01-01",
+      "paragraphs": [
+        "这段示例展示新闻正文的排版。正式日报第一段讲清发生了什么，并保留真实发布日期与原始出处。",
+        "第二段解释为什么值得关注，以及适用条件。正式内容需要事实核对，本示例不能用于真实群发。"
+      ],
+      "sources": [
+        {
+          "label": "示例链接",
+          "url": "https://example.com/"
+        }
+      ]
+    }
+  ]
+}

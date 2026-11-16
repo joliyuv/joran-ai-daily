@@ -1,0 +1,15 @@
+{
+  "provider": "cloudflare_pages",
+  "project": "your-ai-daily",
+  "accountId": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "branch": "main",
+  "url": "https://your-ai-daily.pages.dev",
+  "wrangler": [
+    "npx",
+    "--yes",
+    "wrangler@4.151.0"
+  ],
+  "retentionDays": 30,
+  "cleanupAfterVerifiedPublication": false,
+  "retireSupersededNewsDeployments": false
+}

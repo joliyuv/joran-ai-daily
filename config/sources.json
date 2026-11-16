@@ -1,0 +1,9 @@
+{
+  "lookbackDays": 1,
+  "sources": [
+    {"id": "aihot", "adapter": "aihot", "enabled": true, "url": "https://aihot.news/api/v1/agent/latest?limit=30"},
+    {"id": "builders-x", "adapter": "builders_x", "enabled": true, "url": "https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-x.json"},
+    {"id": "builders-podcasts", "adapter": "builders_podcasts", "enabled": true, "url": "https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-podcasts.json"},
+    {"id": "builders-blogs", "adapter": "builders_blogs", "enabled": true, "url": "https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-blogs.json"}
+  ]
+}
